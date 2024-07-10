@@ -1,3 +1,189 @@
-<H1>
-    Hello world
-</H1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boston House Price Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .navbar {
+            background-color: #343a40;
+            padding: 0.5rem 2rem;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+
+        }
+        .header h1 {
+            color: white;  /* Explicitly set the color to white */
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        .header p {
+            margin: 10px 0 0;
+            font-size: 1.2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #007bff;
+        }
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+        .field-explanation {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        .prediction-output {
+            background-color: #e9ecef;
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: #28a745;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <header class="header">
+        <h1>Boston House Price Prediction</h1>
+        <p>Estimate house prices using machine learning</p>
+    </header>
+
+    <div class="container">
+        <h2>About the Project</h2>
+        <p>This project uses machine learning to predict house prices in Boston based on various features. The model has been trained on the famous Boston Housing Dataset, which contains information collected by the U.S Census Service concerning housing in the area of Boston, Massachusetts.</p>
+
+        <h2>Predict a House Price</h2>
+        <form action="{{ url_for('predict')}}" method="post">
+            <label for="crim">CRIM (Crime rate):</label>
+            <input type="number" id="crim" name="crim" step="0.000001" required>
+            <p class="field-explanation">Per capita crime rate by town (Range: 0 to 100)</p>
+
+            <label for="zn">ZN (Residential land zoned):</label>
+            <input type="number" id="zn" name="zn" step="0.01" required>
+            <p class="field-explanation">Proportion of residential land zoned for lots over 25,000 sq.ft. (Range: 0 to 100)</p>
+
+            <label for="indus">INDUS (Non-retail business acres):</label>
+            <input type="number" id="indus" name="indus" step="0.01" required>
+            <p class="field-explanation">Proportion of non-retail business acres per town (Range: 0 to 30)</p>
+
+            <label for="chas">CHAS (Charles River dummy variable):</label>
+            <input type="number" id="chas" name="chas" min="0" max="1" step="1" required>
+            <p class="field-explanation">1 if tract bounds river; 0 otherwise (Range: 0 or 1)</p>
+
+            <label for="nox">NOX (Nitric oxides concentration):</label>
+            <input type="number" id="nox" name="nox" step="0.000001" required>
+            <p class="field-explanation">Nitric oxides concentration in parts per 10 million (Range: 0 to 1)</p>
+
+            <label for="rm">RM (Average number of rooms):</label>
+            <input type="number" id="rm" name="rm" step="0.01" required>
+            <p class="field-explanation">Average number of rooms per dwelling (Range: 3 to 9)</p>
+
+            <label for="age">AGE (Proportion of owner-occupied units):</label>
+            <input type="number" id="age" name="age" step="0.1" required>
+            <p class="field-explanation">Proportion of owner-occupied units built prior to 1940 (Range: 0 to 100)</p>
+
+            <label for="dis">DIS (Distances to employment centres):</label>
+            <input type="number" id="dis" name="dis" step="0.0001" required>
+            <p class="field-explanation">Weighted distances to five Boston employment centres (Range: 1 to 12)</p>
+
+            <label for="rad">RAD (Accessibility to radial highways):</label>
+            <input type="number" id="rad" name="rad" step="1" required>
+            <p class="field-explanation">Index of accessibility to radial highways (Range: 1 to 24)</p>
+
+            <label for="tax">TAX (Property-tax rate):</label>
+            <input type="number" id="tax" name="tax" step="1" required>
+            <p class="field-explanation">Full-value property-tax rate per $10,000 (Range: 187 to 711)</p>
+
+            <label for="ptratio">PTRATIO (Pupil-teacher ratio):</label>
+            <input type="number" id="ptratio" name="ptratio" step="0.1" required>
+            <p class="field-explanation">Pupil-teacher ratio by town (Range: 12 to 22)</p>
+
+            <label for="b">B (Proportion of black residents):</label>
+            <input type="number" id="b" name="b" step="0.01" required>
+            <p class="field-explanation">1000(Bk - 0.63)^2 where Bk is the proportion of Black people by town (Range: 0 to 396.90)</p>
+
+            <label for="lstat">LSTAT (% lower status of the population):</label>
+            <input type="number" id="lstat" name="lstat" step="0.01" required>
+            <p class="field-explanation">% lower status of the population (Range: 1 to 40)</p>
+
+            <input type="submit" value="Predict Price">
+        </form>
+
+        <div class="prediction-output">
+            {{prediction_text}}
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2023 Boston House Price Prediction. All rights reserved.</p>
+    </footer>
+</body>
+</html>
