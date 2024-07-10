@@ -1,0 +1,13 @@
+name: boston-house-price
+services:
+  - name: web
+    instance_type: nano
+    git:
+      repository: https://github.com/VivekRajpoot01/boston_house_pricing.git
+      branch: main
+    build:
+      builder: python
+    run:
+      command: python app.py
+    ports:
+      - port: 5000
